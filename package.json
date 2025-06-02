@@ -1,0 +1,20 @@
+{
+  "name": "dao",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx hardhat node",
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat ignition deploy ignition/modules/Condominium.ts --network local",
+    "compile": "npx hardhat compile"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.24.1",
+    "solidity-coverage": "^0.8.16"
+  }
+}
