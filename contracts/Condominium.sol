@@ -95,10 +95,12 @@ contract Condominium is ICondominium {
     function addTopic(string memory title, 
         string memory description, 
         Lib.Category category,
-    uint amount) external onlyResidents {
+        uint amount,
+        address responsible
+    ) external onlyResidents {
         require(!topicExists(title), "This topic already exists");
         if(amount > 0){
-            require(category == Lib.Category.CHANGE_QUOTA || category == Lib.Category.SPENT, "Wrog category");
+            require(category == Lib.Category.CHANGE_QUOTA || category == Lib.Category.SPENT, "Wrong category");
         }
 
         Lib.Topic memory newTopic = Lib.Topic({
@@ -109,7 +111,8 @@ contract Condominium is ICondominium {
             endDate: 0,
             status: Lib.Status.IDLE,
             category: category,
-            amount: amount
+            amount: amount,
+            responsible: responsible != address(0) ? responsible : tx.origin
         });
 
         topics[keccak256(bytes(title))] = newTopic;
@@ -198,7 +201,9 @@ contract Condominium is ICondominium {
             if(topic.category == Lib.Category.CHANGE_QUOTA){
                 monthlyQuota = topic.amount;    
             }
-            else if(topic.category == )
+            else if(topic.category == Lib.Category.CHANGE_MANAGER){
+                manager = topic.responsible;
+            }
         }
 
     }

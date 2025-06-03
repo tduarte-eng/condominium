@@ -35,7 +35,8 @@ library CondominiumLib {
         uint256 startdDate;
         uint256 endDate;
         Category category;
-        uint amount;        
+        uint amount;
+        address responsible;        
     }
 
     struct Vote{

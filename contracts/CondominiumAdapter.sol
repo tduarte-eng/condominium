@@ -39,9 +39,10 @@ contract CondominiumAdapter {
 //        return implementation.setManager(newManager);
 //    }
 
-    //todo: mudar addTopic
-    function addTopic(string memory title, string memory description, Lib.Category category, uint amount) external{
-        return implementation.addTopic(title, description, category, amount);
+    
+    function addTopic(string memory title, string memory description, Lib.Category category,
+        uint amount, address responsible) external{
+        return implementation.addTopic(title, description, category, amount, responsible);
     }
     
     //todo: criar o edit Topic
