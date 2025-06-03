@@ -6,13 +6,15 @@ import {CondominiumLib as Lib} from "./CondominiumLib.sol";
 interface ICondominium {
 
     function addResident(address resident, uint16 residenceId) external;
+    
     function removeResident(address resident) external;
+    
     function setCounselor(address resident, bool isEntering) external;
 
 //todo: mudar setManager
 //    function setManager(address newManager) external;
     //todo: mudar addTopic
-    function addTopic(string memory title, string memory description) external;
+    function addTopic(string memory title, string memory description, Lib.Category category,uint amount) external;
     
     //todo: criar o edit Topic
     
@@ -21,7 +23,9 @@ interface ICondominium {
     //todo: criar setquota mensal
 
     function openVoting(string memory title) external; 
+    
     function vote(string memory title, Lib.Options option) external;
+    
     function closeVoting(string memory title) external; 
     
     //todo: pay quota mensal

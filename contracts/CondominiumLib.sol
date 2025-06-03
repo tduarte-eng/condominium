@@ -12,11 +12,19 @@ library CondominiumLib {
         DENIED
     }//0,1,2,3
 
+    //Quais opções que podem ser votados
     enum Options {
-        EMPTY,//ocioso
-        YES,//Em votacao
-        NO,//Aprovado
+        EMPTY,//Nao votar
+        YES,
+        NO,
         ABSTENTION
+    }//0,1,2,3
+
+    enum Category {
+        DECISION,//Nao votar
+        SPENT,
+        CHANGE_QUOTA,
+        CHANGE_MANAGER
     }//0,1,2,3
 
     struct Topic{
@@ -25,7 +33,9 @@ library CondominiumLib {
         Status status;
         uint256 createdDate;
         uint256 startdDate;
-        uint256 endDate;        
+        uint256 endDate;
+        Category category;
+        uint amount;        
     }
 
     struct Vote{
