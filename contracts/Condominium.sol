@@ -48,7 +48,13 @@ contract Condominium is ICondominium {
         require(tx.origin == manager || isResident(tx.origin), "Only the manager or the residents can do this");
         _;
     }
-    
+
+    modifier validAddress(address addr){
+        require(addr != address(0), "Invalid address");
+        _;
+    }
+
+
     //Verifica se a Residencia exsite
     function residenceExists(uint16 residenceId) public view returns (bool){
         return residences[residenceId]; 
@@ -59,7 +65,10 @@ contract Condominium is ICondominium {
         return residents[resident] > 0; 
     }
 
-    function addResident(address resident, uint16 residenceId) external onlyCouncil{//Somente os onlyCouncil pode acessar
+    function addResident(address resident, uint16 residenceId) external 
+        onlyCouncil
+        validAddress(resident)
+    {//Somente os onlyCouncil pode acessar
         require(residenceExists(residenceId), "This residence does not exists");
         residents[resident] = residenceId;
     }
@@ -67,11 +76,12 @@ contract Condominium is ICondominium {
     function removeResident(address resident) external onlyManager{//Somente o Presidente pode excluir um residente
         require(!counselors[resident], "A counselor cannot be removed");//Se for do Conselho não pode ser excluido
         delete residents[resident];
-
-        if (counselors[resident]) delete counselors[resident];
     }
 
-    function setCounselor(address resident, bool isEntering) external onlyManager {
+    function setCounselor(address resident, bool isEntering) external
+        onlyManager
+        validAddress(resident)
+    {
         if(isEntering){
             require(isResident(resident), "The counselor must be a resident");
             counselors[resident] = true;
@@ -148,8 +158,10 @@ contract Condominium is ICondominium {
 
         Lib.Vote[] memory votes = votings[topicId];
         for(uint8 i=0; i < votes.length; i++){
-            if(votes[i].residence == residence)
-                require(false, "A residence should vote only once");
+            require(
+                votes[i].residence != residence,
+                "A residence should vote only once"
+            );
         }
 
         Lib.Vote memory newVote = Lib.Vote({
@@ -211,6 +223,21 @@ contract Condominium is ICondominium {
     function numberOfVotes(string memory title) public view returns(uint256){
         bytes32 topicId = keccak256(bytes(title));
         return votings[topicId].length;
+    }
+
+    function editTopic(string memory topicToEdit, string memory description, uint amount, address responsible) external onlyManager {
+        Lib.Topic memory topic = getTopic(topicToEdit);
+        require(topic.createdDate > 0, "This topic does not exists");
+        require(topic.status == Lib.Status.IDLE, "Only IDLE topics can be edited");
+
+        bytes32 topicId = keccak256(bytes(topicToEdit));
+
+        if(bytes(description).length > 0)
+            topics[topicId].description = description;
+        if(amount >= 0)
+            topics[topicId].amount = amount;
+        if(responsible != address(0))
+            topics[topicId].responsible = responsible;
     }
 
 }
