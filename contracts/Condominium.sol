@@ -15,7 +15,8 @@ contract Condominium is ICondominium {
     mapping(address => uint16) public residents; //Wallets mapeadas em => unidades do condominio (1-101) (2-505)  
     mapping(address => bool) public counselors; //Carteiras pertecentes ao Conselho    
 
-    
+    mapping(uint16 => uint) public payments;//unidade => ultimo pagamento (timestamp)
+
     //Cada topico da reunião vai ter um identificador único = Hash do titulo do topico   
     mapping(bytes32 => Lib.Topic) public topics;
     mapping(bytes32 => Lib.Vote[]) public votings;
@@ -46,6 +47,8 @@ contract Condominium is ICondominium {
 
     modifier onlyResidents(){
         require(tx.origin == manager || isResident(tx.origin), "Only the manager or the residents can do this");
+        require(tx.origin == manager || block.timestamp < payments[residents[tx.origin]]
+         + (30 * 24 * 60 * 60), "The resident must be defaulter");
         _;
     }
 
@@ -88,10 +91,10 @@ contract Condominium is ICondominium {
         } else delete counselors[resident]; 
     }
 
-    function setManager(address newManager) external onlyManager {
-        require(newManager != address(0), "The address must be valid");
-        manager = newManager;
-    }   
+//    function setManager(address newManager) external onlyManager {
+//        require(newManager != address(0), "The address must be valid");
+//        manager = newManager;
+//    }   
 
     function getTopic(string memory title) public view returns (Lib.Topic memory){
         bytes32 topicId = keccak256(bytes(title));
@@ -239,6 +242,15 @@ contract Condominium is ICondominium {
         if(responsible != address(0))
             topics[topicId].responsible = responsible;
     }
+
+    function payQuota(uint16 residenceId) external payable {
+        require(residenceExists(residenceId), "The residence does not exists");
+        require(msg.value >= monthlyQuota, "Wrong value");
+        require(block.timestamp > payments[residenceId] + (30 * 24 * 60 * 60), "You cannot pay twice a month");
+
+        payments[residenceId] = block.timestamp;
+    }
+
 
 }
 
