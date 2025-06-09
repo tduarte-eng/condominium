@@ -9,7 +9,9 @@ library CondominiumLib {
         IDLE,//ocioso
         VOTING,//Em votacao
         APPROVED,//Aprovado
-        DENIED
+        DENIED,
+        DELETED,
+        SPENT
     }//0,1,2,3
 
     //Quais opções que podem ser votados
@@ -44,6 +46,19 @@ library CondominiumLib {
         uint16 residence;
         Options option;
         uint256 timestamp;
+    }
+
+    struct TopicUpdate{
+        bytes32 id;
+        string title;
+        Status status;
+        Category category;
+    }
+
+    struct TransferReceipt {
+        address to;
+        uint amount;
+        string topic;
     }
 
 }

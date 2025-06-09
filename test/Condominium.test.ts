@@ -22,7 +22,8 @@ describe("Condominium", function () {
         IDLE = 0,//ocioso
         VOTING = 1,//Em votacao
         APPROVED = 2,//Aprovado
-        DENIED = 3
+        DENIED = 3,
+        SPENT = 4
     }//0,1,2,3
 
 
@@ -472,7 +473,7 @@ describe("Condominium", function () {
       await contract.addTopic("topic 1", "description 1", Category.DECISION, 0, manager.address);
       const instance = contract.connect(accounts[1]);
       
-      await expect(instance.closeVoting("topic 1")).to.be.revertedWith("Only the manager can do this");
+      await expect(instance.openVoting("topic 1")).to.be.revertedWith("Only the manager can do this");
       
   });
 
@@ -515,5 +516,46 @@ describe("Condominium", function () {
       await expect(contract.payQuota(1102, {value: ethers.parseEther("0.01")}))
         .to.be.revertedWith("You cannot pay twice a month");  
   });
+
+    it("Should NOT transfer (manager)", async function () {
+      const { contract, manager, accounts } = await loadFixture(deployFixture);
+
+      const instance = contract.connect(accounts[1]);
+      await expect(instance.transfer("topic 1", 100))
+        .to.be.revertedWith("Only the manager can do this");
+    });  
+
+    it("Should NOT transfer (funds)", async function () {
+      const { contract, manager, accounts } = await loadFixture(deployFixture);
+
+      await expect(contract.transfer("topic 1", 100))
+        .to.be.revertedWith("Insufficient funds");
+    }); 
+
+    it("Should NOT transfer (topic)", async function () {
+      const { contract, manager, accounts } = await loadFixture(deployFixture);
+
+      await addResidents(contract, 1, accounts);  
+      await expect(contract.transfer("topic 1", 100))
+        .to.be.revertedWith("Only APPROVED SPENT topics can be used for transfers");
+    }); 
+
+     it("Should NOT transfer (amount)", async function () {
+      const { contract, manager, accounts } = await loadFixture(deployFixture);
+      
+      await addResidents(contract, 10, accounts);
+
+      await contract.addTopic("topic 1", "description 1", Category.SPENT, 100, accounts[1].address);
+      await contract.openVoting("topic 1");
+      
+      await addVotes(contract, 10, accounts);   
+      
+      await contract.closeVoting("topic 1");
+
+      await expect(contract.transfer("topic 1", 101))
+        .to.be.revertedWith("The amount muste be less or equal the APPROVED topic");
+
+    });  
+   
 
 });
