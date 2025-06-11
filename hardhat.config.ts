@@ -2,8 +2,10 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "solidity-coverage"
 
-import dotenv from 'dotenv';
-dotenv.config;
+//import dotenv from 'dotenv';
+//dotenv.config;
+require('dotenv').config();
+
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
@@ -14,14 +16,12 @@ const config: HardhatUserConfig = {
       accounts: {
         mnemonic: "test test test test test test test test test test test junk"
       }
+    },
+    REDE_BNB: {
+      url: `${process.env.NODE_URL}`,
+      chainId: parseInt(`${process.env.CHAIN_ID}`),
+      accounts:[process.env.SECRET]
     }
-//    REDE_BNB: {
-//      url: process.env.NODE_URL,
-//      chainId: parseInt(`${process.env.CHAIN_ID}`),
-//      accounts:{
-//        mnemonic: process.env.SECRET
-//      }
-//    }
   }
 };
 

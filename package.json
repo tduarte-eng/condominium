@@ -7,7 +7,7 @@
     "test": "npx hardhat test",
     "deploy": "npx hardhat ignition deploy ignition/modules/Condominium.ts --network local",
     "compile": "npx hardhat compile",
-    "ignition": "npx hardhat ignition deploy ignition/modules/Condominium.ts --network local"
+    "ignition": "npx hardhat ignition deploy ignition/modules/Condominium.ts --network REDE_BNB"
   },
   "keywords": [],
   "author": "",
