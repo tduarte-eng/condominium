@@ -7,6 +7,11 @@ import "solidity-coverage"
 require('dotenv').config();
 
 
+if (!process.env.NODE_URL || !process.env.CHAIN_ID || !process.env.SECRET) {
+  throw new Error("Variáveis de ambiente NODE_URL, CHAIN_ID ou SECRET não estão definidas.");
+}
+
+
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
   networks: {
@@ -17,10 +22,11 @@ const config: HardhatUserConfig = {
         mnemonic: "test test test test test test test test test test test junk"
       }
     },
+
     REDE_BNB: {
       url: `${process.env.NODE_URL}`,
       chainId: parseInt(`${process.env.CHAIN_ID}`),
-      accounts:[process.env.SECRET]
+      accounts:[process.env.SECRET],
     }
   }
 };

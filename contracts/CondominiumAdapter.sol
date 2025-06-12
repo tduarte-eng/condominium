@@ -104,6 +104,29 @@ contract CondominiumAdapter {
        Lib.TransferReceipt memory receipt = implementation.transfer(topicTitle, amount);
        emit Transfer(receipt.to, receipt.amount, receipt.topic); 
     }  
-//    function numberOfVotes(string memory title) external;
+
+    function getManager() external view upgraded returns (address){
+        return implementation.getManager();
+    }
+
+    function getQuota() external view upgraded returns (uint){
+        return implementation.getQuota();
+    }
+
+    function getResident(address resident) external view upgraded returns (Lib.Resident memory){
+        return implementation.getResident(resident);
+    }
+
+    function getResidents(uint page, uint pageSize) external view upgraded returns (Lib.ResidentPage memory){
+        return implementation.getResidents(page, pageSize);
+    }
+
+    function getTopic(string memory title) external view upgraded returns (Lib.Topic memory){
+        return implementation.getTopic(title);
+    }
+
+    function getTopics(uint page, uint pageSize) external view upgraded returns (Lib.TopicPage memory){
+        return implementation.getTopics(page, pageSize);
+    }
 
 }

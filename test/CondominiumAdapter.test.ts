@@ -386,4 +386,6 @@ describe("CondominiumAdapter", function () {
 
     });
 
+
+    
 });

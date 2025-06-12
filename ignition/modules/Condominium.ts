@@ -11,7 +11,7 @@ const CondominiumModule = buildModule("CondominiumModule", (m) => {
 //  const lockedAmount = m.getParameter("lockedAmount", ONE_GWEI);
 
   const condominium = m.contract("Condominium");
-
+   
   const adapter = m.contract("CondominiumAdapter", [], {
     after: [condominium],
   });
