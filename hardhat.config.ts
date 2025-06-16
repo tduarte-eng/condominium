@@ -25,10 +25,10 @@ const config: HardhatUserConfig = {
   },
     networks: {
     local: {
-      url: "http://127.0.0.1:8545",
-      chainId: 31337,
+      url: process.env.LOCAL,
+      chainId: parseInt(`${process.env.CHAIN_ID_LOCAL}`),
       accounts: {
-        mnemonic: "test test test test test test test test test test test junk"
+        mnemonic: process.env.MNEMONIC
       }
     },
     REDE_BNB: {
