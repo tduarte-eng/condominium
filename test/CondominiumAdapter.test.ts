@@ -140,8 +140,9 @@ describe("CondominiumAdapter", function () {
       await adapter.upgrade(contract.target);
       await adapter.addResident(accounts[1].address, 1301);
       await adapter.setCounselor(accounts[1].address, true);
-         
-      expect(await contract.counselors(accounts[1].address)).to.equal(true);
+      
+      const resident = await adapter.getResident(accounts[1].address);
+      expect(resident.isManager).to.equal(true);
 
     });
 
