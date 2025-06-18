@@ -6,7 +6,7 @@ import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre, { ethers } from "hardhat";
 import { Condominium } from "../typechain-types";
-import { SignertWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
+import { SignerWithAddress } from "@nomicfoundation/hardhat-ethers/signers";
 
 
 describe("Condominium", function () {
@@ -555,7 +555,31 @@ describe("Condominium", function () {
       await expect(contract.transfer("topic 1", 101))
         .to.be.revertedWith("The amount muste be less or equal the APPROVED topic");
 
-    });  
+    }); 
+    
+describe("Residents Pagination", function () {
+    it("Should retrieve paginated residents", async function () {
+        const { contract, manager, accounts } = await loadFixture(deployFixture);
+
+        // Adiciona residentes de teste
+      await addResidents(contract, 10, accounts);
+      
+      //await ethers.provider.send("evm_mine", []);
+
+        // Obtém residentes na primeira página
+        const result = await contract.getResidents(1, 10);
+        // Verifica se pelo menos um residente foi retornado
+        expect(result.residents.length).to.be.greaterThan(0);
+
+        // Verifica se o primeiro residente no array é o esperado
+        expect(result.residents[1].wallet).to.equal(accounts[1].address);
+
+        // Verifica se o total de residentes é o correto
+        expect(result.total).to.equal(2);
+    });
+
+
+});   
    
 
 });

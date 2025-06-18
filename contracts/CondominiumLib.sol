@@ -34,7 +34,7 @@ library CondominiumLib {
         string description;
         Status status;
         uint256 createdDate;
-        uint256 startdDate;
+        uint256 startDate;
         uint256 endDate;
         Category category;
         uint amount;
