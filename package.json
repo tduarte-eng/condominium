@@ -12,18 +12,31 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.",
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@latest",
     "ethers": "^6.14.3",
-    "hardhat": "^2.24.1",
+    "hardhat": "^2.25.0",
     "hardhat-contract-sizer": "^2.10.0",
     "solidity-coverage": "^0.8.16",
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "dotenv": "^16.5.0"
-  }
+    "@openzeppelin/contracts": "^5.3.0",
+    "dotenv": "^16.6.1"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tduarte-eng/condominium.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/tduarte-eng/condominium/issues"
+  },
+  "homepage": "https://github.com/tduarte-eng/condominium#readme"
 }

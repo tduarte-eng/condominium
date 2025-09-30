@@ -7,9 +7,9 @@ import "hardhat-contract-sizer"
 require('dotenv').config();
 
 
-if (!process.env.NODE_URL || !process.env.CHAIN_ID || !process.env.SECRET) {
-  throw new Error("Variáveis de ambiente NODE_URL, CHAIN_ID ou SECRET não estão definidas.");
-}
+//if (!process.env.NODE_URL || !process.env.CHAIN_ID || !process.env.SECRET) {
+//  throw new Error("Variáveis de ambiente NODE_URL, CHAIN_ID ou SECRET não estão definidas.");
+//}
 
 
 
@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
     REDE_BNB: {
       url: `${process.env.NODE_URL}`,
       chainId: parseInt(`${process.env.CHAIN_ID}`),
-      accounts:[process.env.SECRET],
+      accounts:[process.env.SECRET!],
     }
   },
   contractSizer: {
